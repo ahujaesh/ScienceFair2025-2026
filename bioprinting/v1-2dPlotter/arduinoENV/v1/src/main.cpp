@@ -89,44 +89,44 @@ void setup() {
 void controlMotor(DIR MOTOR_A_LEFT_RIGHT, DIR MOTOR_B_UP_DOWN) {
   if (MOTOR_A_LEFT_RIGHT == RIGHT && MOTOR_B_UP_DOWN == DOWN){
     digitalWrite(2,HIGH); //both blue
-    analogWrite(5,50);
+    analogWrite(5,250);
     digitalWrite(4,LOW);
-    analogWrite(6,50);
+    analogWrite(6,250);
   } else if (MOTOR_A_LEFT_RIGHT == LEFT && MOTOR_B_UP_DOWN == UP) {
     digitalWrite(2,LOW); //both green
-    analogWrite(5,50);
+    analogWrite(5,250);
     digitalWrite(4,HIGH);
-    analogWrite(6,50);
+    analogWrite(6,250);
   } else if (MOTOR_A_LEFT_RIGHT == LEFT && MOTOR_B_UP_DOWN == DOWN) {
     digitalWrite(2,LOW);//a green b blue
-    analogWrite(5,50);
+    analogWrite(5,250);
     digitalWrite(4,LOW);
-    analogWrite(6,50);
+    analogWrite(6,250);
   } else if (MOTOR_A_LEFT_RIGHT == RIGHT && MOTOR_B_UP_DOWN == UP) {
     digitalWrite(2,HIGH);//a blue and b green
-    analogWrite(5,50);
+    analogWrite(5,250);
     digitalWrite(4,HIGH);
-    analogWrite(6,50);
+    analogWrite(6,250);
   } else if (MOTOR_A_LEFT_RIGHT == LEFT && MOTOR_B_UP_DOWN == STOPPED) {
     digitalWrite(2,LOW); // Left only
-    analogWrite(5,50);
+    analogWrite(5,250);
     digitalWrite(4,LOW);
     analogWrite(6,0);
   } else if (MOTOR_A_LEFT_RIGHT == RIGHT && MOTOR_B_UP_DOWN == STOPPED) {
     digitalWrite(2,HIGH); // Right only
-    analogWrite(5,50);
+    analogWrite(5,250);
     digitalWrite(4,LOW);
     analogWrite(6,0);
   } else if (MOTOR_A_LEFT_RIGHT == STOPPED && MOTOR_B_UP_DOWN == UP) {
     digitalWrite(2,LOW); // Up only
     analogWrite(5,0);
     digitalWrite(4,HIGH);
-    analogWrite(6,50);
+    analogWrite(6,250);
   } else if (MOTOR_A_LEFT_RIGHT == STOPPED && MOTOR_B_UP_DOWN == DOWN) {
     digitalWrite(2,LOW); // Down only
     analogWrite(5,0);
     digitalWrite(4,LOW);
-    analogWrite(6,50);
+    analogWrite(6,250);
   } else if (MOTOR_A_LEFT_RIGHT == STOPPED && MOTOR_B_UP_DOWN == STOPPED) {
     analogWrite(5, 0); // Stop both motors
     analogWrite(6, 0);
@@ -142,28 +142,28 @@ void loop() {
   Serial.print(yValue);
   Serial.print("\n");
 
-  if (xValue > (500 + threshold) && yValue > (500 + threshold)) {
+  if (xValue > (500 + threshold) && yValue > (500 + threshold + 50)) {
     controlMotor(RIGHT, UP);
     Serial.println("Moving Right and Up");
-  } else if (xValue < (500 - threshold) && yValue > (500 + threshold)) {
+  } else if (xValue < (500 - threshold) && yValue > (500 + threshold + 50)) {
     controlMotor(LEFT, UP);
     Serial.println("Moving Left and Up");
-  } else if (xValue < (500 - threshold) && yValue < (500 - threshold)) {
+  } else if (xValue < (500 - threshold) && yValue < (500 - threshold - 50)) {
     controlMotor(LEFT, DOWN);
     Serial.println("Moving Left and Down");
-  } else if (xValue > (500 + threshold) && yValue < (500 - threshold)) {
+  } else if (xValue > (500 + threshold) && yValue < (500 - threshold - 50)) {
     controlMotor(RIGHT, DOWN);
     Serial.println("Moving Right and Down");
-  } else if (xValue > (500 + threshold) && yValue < (500 + threshold) && yValue > (500 - threshold)) {
+  } else if (xValue > (500 + threshold) && yValue < (500 + threshold + 50) && yValue > (500 - threshold - 50)) {
     controlMotor(RIGHT, STOPPED);
     Serial.println("Moving Right");
-  } else if (xValue < (500 - threshold) && yValue < (500 + threshold) && yValue > (500 - threshold)) {
+  } else if (xValue < (500 - threshold) && yValue < (500 + threshold + 50) && yValue > (500 - threshold - 50)) {
     controlMotor(LEFT, STOPPED);
     Serial.println("Moving Left");
-  } else if (yValue > (500 + threshold) && xValue < (500 + threshold) && xValue > (500 - threshold)) {
+  } else if (yValue > (500 + threshold) && xValue < (500 + threshold + 50) && xValue > (500 - threshold - 50)) {
     controlMotor(STOPPED, UP);
     Serial.println("Moving Up");
-  } else if (yValue < (500 - threshold) && xValue < (500 + threshold) && xValue > (500 - threshold)) {
+  } else if (yValue < (500 - threshold) && xValue < (500 + threshold + 50) && xValue > (500 - threshold - 50)) {
     controlMotor(STOPPED, DOWN);
     Serial.println("Moving Down");
   } else { 
@@ -171,7 +171,7 @@ void loop() {
     Serial.println("Stopped");
   }
   
-  delay(1000);
+  delay(100);
 }
 
 
