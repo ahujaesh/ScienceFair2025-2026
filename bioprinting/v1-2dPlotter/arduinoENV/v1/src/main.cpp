@@ -37,7 +37,8 @@ const int d7 = 27;    // Data line 7
 const int backlightA = 25; // Backlight anode (PWM-capable pin)
 const int backlightK = 23; // Backlight cathode
 
-const int MSPerMM = 10; //temp val for the amount of ms at 250/255 power it takes to move one mm
+const int MSPerMMX = 85; //approx val for the amount of ms at 250/255 power it takes to move one mm X
+const int MSPerMMY = 90; //approx val for the amount of ms at 250/255 power it takes to move one mm Y
 
 LiquidCrystal lcd(rs, enable, d4, d5, d6, d7);
 
@@ -54,11 +55,11 @@ String gcode[] = { //based on a 100mm^2 space, where toolhead is located at (0,0
   "G91", //relative positioning
   "G21", //units:mm
 
-  "G0 X10 Y10", //smile
+  "G0 X15 Y15", //smile
 
   "G1 E10", //start extruding
 
-  "G0 X90 Y10", //end smile
+  "G0 X85 Y15", //end smile
 
   "G1 E0", //stop extruding
 
@@ -167,11 +168,11 @@ void controlGantry(int targetX, int targetY) {
   DIR xMovementDirection;
 
   if ((currLocX - targetX) < 0) { //dir is positive
-    xMovementDirection = RIGHT;
+    xMovementDirection = LEFT;
   } else if ((currLocX - targetX) == 0) { //already at loc
     xMovementDirection = STOPPED;
   } else if ((currLocX - targetX) > 0) { // dir is negative
-    xMovementDirection = LEFT;
+    xMovementDirection = RIGHT;
   }
 
   int mmToMoveX = abs(currLocX - targetX);
@@ -190,14 +191,16 @@ void controlGantry(int targetX, int targetY) {
 
   for (int mmX = 1; mmX <= (mmToMoveX); mmX++) { //move one mm per loop until all mm movement is complete 
     setPowerForGantry(xMovementDirection, STOPPED);
-    delay(MSPerMM);
+    delay(MSPerMMX); //x moves slightly faster than y
     setPowerForGantry(STOPPED, STOPPED);
+    Serial.print("moved1mmX \n");
   }
 
   for (int mmY = 1; mmY <= (mmToMoveY); mmY++) { // move one mm per loop until all mm movement is complete
     setPowerForGantry(STOPPED, yMovementDirection);
-    delay(MSPerMM);
+    delay(MSPerMMY);
     setPowerForGantry(STOPPED, STOPPED);
+    Serial.print("moved1mmY \n");
   }
 
   currLocX = targetX;
@@ -257,7 +260,7 @@ void loop() {
           //TODO: Add stop extrusion logic
         }
       }
-      delay(5); //prevent overload
+      delay(500); //prevent overload
     }
     hasBeenPrinted = true;
   } else { // if it has been printed, switch to joystick control
