@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <LiquidCrystal.h>
+#include <Servo.h>
 
 //JOYSTICK WIRES FACE RIGHT
 //A is LEFTRIGHT
@@ -25,6 +26,8 @@ const int motorUpDown2 = 5;
 
 bool hasBeenPrinted = false; //is the print complete
 
+bool isExtruding = false; //is the printer currently extruding bioink+cells
+
 int currLocX = 0, currLocY = 0;
 
 const int vss = 53;   // Ground (LOW)
@@ -47,6 +50,12 @@ const int MSPerMMY = 90; //approx val for the amount of ms at 250/255 power it t
 const int extrusionServoGNDPin = A14;
 const int extrusionServoDataPin = A13;
 const int extrusionServoPowerPin = A15;
+
+Servo extrusionServo;
+
+int servoPos; //current servo position
+const int extrusionServoInitPos;
+const int unitsPerLoopForExtrusionServoMovement = 1; //temp val, adj later
 
 LiquidCrystal lcd(rs, enable, d4, d5, d6, d7);
 
@@ -111,6 +120,8 @@ void setup() {
   digitalWrite(extrusionServoGNDPin, LOW);  // Set GND pin to LOW/GND
   digitalWrite(extrusionServoPowerPin, HIGH); // Set Power pin to HIGH/5V
 
+  extrusionServo.attach(extrusionServoDataPin);
+
   Serial.println("Configuring power pins...");
   pinMode(vss, OUTPUT);
   pinMode(vdd, OUTPUT);
@@ -133,6 +144,8 @@ void setup() {
   lcd.begin(16, 2);
   lcd.print("BioprinterV1!");
   Serial.println("LCD initialized and message displayed.");
+
+  extrusionServo.write(extrusionServoInitPos);
 }
 
 bool joystickButtonIsPressed() {
@@ -259,6 +272,12 @@ void controlGantry(int targetX, int targetY) {
 void loop() {
   if (hasBeenPrinted == false) { // if it hasn't been printed, print it
     for (int lineNum = 0; lineNum < (sizeof(gcode) / sizeof(gcode[0])); lineNum++) {
+      //each loop, if it is extruding, turn the plunger down one unit (TODO: add min, max limits to this)
+
+      if (isExtruding == true) {
+        extrusionServo.write(servoPos - 1);
+      }
+
       String lineContent = gcode[lineNum];
       if (lineContent.startsWith("G0")) {
         int xIndex = lineContent.indexOf('X');
@@ -300,13 +319,15 @@ void loop() {
           lcd.clear();
           lcd.setCursor(0, 0);
           lcd.print("Extruding...");
-          //TODO: Add extrusion logic
+
+          isExtruding = true;
         } else {
           Serial.println("Stopping extrusion...");
           lcd.clear();
           lcd.setCursor(0, 0);
           lcd.print("Stopping...");
-          //TODO: Add stop extrusion logic
+
+          isExtruding = false;
         }
       }
       delay(500); //prevent overload
