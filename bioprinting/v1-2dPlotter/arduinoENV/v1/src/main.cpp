@@ -10,8 +10,11 @@
 //GREEN IS LEFT
 //BLUE IS RIGHT
 
+//  Serial.print(digitalRead(A10)); returns 1 if joystick button is not pressed, returns 0 if it is pressed
+
 const int joystickXPin = A8; // Left/Right
 const int joystickYPin = A9; // Up/Down
+const int joystickButtonPin = A10;
 
 const int threshold = 50;
 
@@ -39,6 +42,11 @@ const int backlightK = 23; // Backlight cathode
 
 const int MSPerMMX = 85; //approx val for the amount of ms at 250/255 power it takes to move one mm X
 const int MSPerMMY = 90; //approx val for the amount of ms at 250/255 power it takes to move one mm Y
+
+//servo
+const int extrusionServoGNDPin = A14;
+const int extrusionServoDataPin = A13;
+const int extrusionServoPowerPin = A15;
 
 LiquidCrystal lcd(rs, enable, d4, d5, d6, d7);
 
@@ -91,7 +99,17 @@ void setup() {
   Serial.begin(9600);
   pinMode(joystickXPin, INPUT);
   pinMode(joystickYPin, INPUT);
+  pinMode(joystickButtonPin, INPUT_PULLUP);
+
   Serial.println("Starting setup...");
+
+  //servo
+  pinMode(extrusionServoGNDPin, OUTPUT);
+  pinMode(extrusionServoDataPin, OUTPUT);
+  pinMode(extrusionServoPowerPin, OUTPUT);
+
+  digitalWrite(extrusionServoGNDPin, LOW);  // Set GND pin to LOW/GND
+  digitalWrite(extrusionServoPowerPin, HIGH); // Set Power pin to HIGH/5V
 
   Serial.println("Configuring power pins...");
   pinMode(vss, OUTPUT);
@@ -115,6 +133,17 @@ void setup() {
   lcd.begin(16, 2);
   lcd.print("BioprinterV1!");
   Serial.println("LCD initialized and message displayed.");
+}
+
+bool joystickButtonIsPressed() {
+  if (digitalRead(A10) == 1) {
+    return false;
+  } else if (digitalRead(A10) == 0) {
+    return true;
+  } else {
+    Serial.println("Error: Unexpected joystick button state.");
+    return true;
+  }
 }
 
 void setPowerForGantry(DIR MOTOR_A_LEFT_RIGHT, DIR MOTOR_B_UP_DOWN) {
@@ -189,18 +218,38 @@ void controlGantry(int targetX, int targetY) {
 
   int mmToMoveY = abs(currLocY - targetY);
 
-  for (int mmX = 1; mmX <= (mmToMoveX); mmX++) { //move one mm per loop until all mm movement is complete 
+  //moves one motor at a time due to battery limitations
+
+  for (int mmX = 1; (mmX <= (mmToMoveX) && hasBeenPrinted == false); mmX++) { //move one mm per loop until all mm movement is complete 
     setPowerForGantry(xMovementDirection, STOPPED);
     delay(MSPerMMX); //x moves slightly faster than y
     setPowerForGantry(STOPPED, STOPPED);
     Serial.print("moved1mmX \n");
+
+    if (joystickButtonIsPressed() == true) { // abort print if joystick button is pressed
+      Serial.println("Print job aborted!");
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Job Aborted!");
+      hasBeenPrinted = true;
+      return; //exit function
+    }
   }
 
-  for (int mmY = 1; mmY <= (mmToMoveY); mmY++) { // move one mm per loop until all mm movement is complete
+  for (int mmY = 1; (mmY <= (mmToMoveY) && hasBeenPrinted == false); mmY++) { // move one mm per loop until all mm movement is complete
     setPowerForGantry(STOPPED, yMovementDirection);
     delay(MSPerMMY);
     setPowerForGantry(STOPPED, STOPPED);
     Serial.print("moved1mmY \n");
+
+    if (joystickButtonIsPressed() == true) { // abort print if joystick button is pressed
+      Serial.println("Print job aborted!");
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Job Aborted!");
+      hasBeenPrinted = true;
+      return; //exit function
+    }
   }
 
   currLocX = targetX;
@@ -235,7 +284,7 @@ void loop() {
         lcd.print("X: " + String(currLocX));
         lcd.setCursor(0, 1);
         lcd.print("Y: " + String(currLocY));
-      } else if (lineContent.startsWith("G1")) {
+      } else if (lineContent.startsWith("G1") && hasBeenPrinted == false) {
         int eIndex = lineContent.indexOf('E');
 
         int eVal = 0;
