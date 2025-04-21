@@ -30,34 +30,39 @@ bool isExtruding = false; //is the printer currently extruding bioink+cells
 
 int currLocX = 0, currLocY = 0;
 
-const int vss = 53;   // Ground (LOW)
-const int vdd = 51;   // Power (HIGH)
-const int vo = 49;    // Contrast (PWM)
-const int rs = 47;    // Register Select
-const int rw = 45;    // Read/Write (set LOW for write)
-const int enable = 43; // Enable
-const int d4 = 33;    // Data line 4
-const int d5 = 31;    // Data line 5
-const int d6 = 29;    // Data line 6
-const int d7 = 27;    // Data line 7
-const int backlightA = 25; // Backlight anode (PWM-capable pin)
-const int backlightK = 23; // Backlight cathode
+// const int vss = 53;   // Ground (LOW)
+// const int vdd = 51;   // Power (HIGH)
+// const int vo = 49;    // Contrast (PWM)
+// const int rs = 47;    // Register Select
+// const int rw = 45;    // Read/Write (set LOW for write)
+// const int enable = 43; // Enable
+// const int d4 = 33;    // Data line 4
+// const int d5 = 31;    // Data line 5
+// const int d6 = 29;    // Data line 6
+// const int d7 = 27;    // Data line 7
+// const int backlightA = 25; // Backlight anode (PWM-capable pin)
+// const int backlightK = 23; // Backlight cathode
 
 const int MSPerMMX = 85; //approx val for the amount of ms at 250/255 power it takes to move one mm X
 const int MSPerMMY = 90; //approx val for the amount of ms at 250/255 power it takes to move one mm Y
 
 //servo
-const int extrusionServoGNDPin = A14;
-const int extrusionServoDataPin = A13;
-const int extrusionServoPowerPin = A15;
+const int extrusionServoDataPin = 46;
 
 Servo extrusionServo;
 
 int servoPos; //current servo position
-const int extrusionServoInitPos;
+const int extrusionServoInitPos = 75;
 const int unitsPerLoopForExtrusionServoMovement = 1; //temp val, adj later
 
-LiquidCrystal lcd(rs, enable, d4, d5, d6, d7);
+const int extrusionServoUpperLimit = 75;
+const int extrusionServoBottomLimit = 115; //actually 120
+
+//fan
+const int fan5vPin = A13;
+const int fanGNDPin = A14;
+
+// LiquidCrystal lcd(rs, enable, d4, d5, d6, d7);
 
 enum DIR {
   UP,
@@ -113,39 +118,62 @@ void setup() {
   Serial.println("Starting setup...");
 
   //servo
-  pinMode(extrusionServoGNDPin, OUTPUT);
   pinMode(extrusionServoDataPin, OUTPUT);
-  pinMode(extrusionServoPowerPin, OUTPUT);
-
-  digitalWrite(extrusionServoGNDPin, LOW);  // Set GND pin to LOW/GND
-  digitalWrite(extrusionServoPowerPin, HIGH); // Set Power pin to HIGH/5V
 
   extrusionServo.attach(extrusionServoDataPin);
-
-  Serial.println("Configuring power pins...");
-  pinMode(vss, OUTPUT);
-  pinMode(vdd, OUTPUT);
-  pinMode(vo, OUTPUT);
-  pinMode(rw, OUTPUT);
-  pinMode(backlightA, OUTPUT); // Configure backlight anode pin
-  pinMode(backlightK, OUTPUT); // Configure backlight cathode pin
-
-  Serial.println("Setting power states...");
-  digitalWrite(vss, LOW);    // VSS to GND
-  digitalWrite(vdd, HIGH);   // VDD to 5V
-  digitalWrite(rw, LOW);     // RW to write mode
-  analogWrite(vo, 5);      // VO to ~50% contrast (PWM)
-  digitalWrite(backlightK, LOW); // Backlight cathode to GND
-  analogWrite(backlightA, 120);  // Backlight anode to 50% brightness
-  Serial.println("Power states set successfully.");
-
-  delay(1000);
-  Serial.println("Initializing LCD...");
-  lcd.begin(16, 2);
-  lcd.print("BioprinterV1!");
-  Serial.println("LCD initialized and message displayed.");
-
   extrusionServo.write(extrusionServoInitPos);
+
+  servoPos = extrusionServoInitPos;
+
+  //fan
+  pinMode(fan5vPin, OUTPUT);
+  pinMode(fanGNDPin, OUTPUT);
+  digitalWrite(fanGNDPin, LOW);  // Set GND pin to LOW/GND
+
+  // Serial.println("Configuring power pins...");
+  // pinMode(vss, OUTPUT);
+  // pinMode(vdd, OUTPUT);
+  // pinMode(vo, OUTPUT);
+  // pinMode(rw, OUTPUT);
+  // pinMode(backlightA, OUTPUT); // Configure backlight anode pin
+  // pinMode(backlightK, OUTPUT); // Configure backlight cathode pin
+
+  // Serial.println("Setting power states...");
+  // digitalWrite(vss, LOW);    // VSS to GND
+  // digitalWrite(vdd, HIGH);   // VDD to 5V
+  // digitalWrite(rw, LOW);     // RW to write mode
+  // analogWrite(vo, 5);      // VO to ~50% contrast (PWM)
+  // digitalWrite(backlightK, LOW); // Backlight cathode to GND
+  // analogWrite(backlightA, 120);  // Backlight anode to 50% brightness
+  // Serial.println("Power states set successfully.");
+
+  // delay(1000);
+  // Serial.println("Initializing LCD...");
+  // lcd.begin(16, 2);
+  // lcd.print("BioprinterV1!");
+  // Serial.println("LCD initialized and message displayed.");
+
+  Serial.println("10");
+  delay(1000);
+  Serial.println("9");
+  delay(1000);
+  Serial.println("8");
+  delay(1000);
+  Serial.println("7");
+  delay(1000);
+  Serial.println("6");
+  delay(1000);
+  Serial.println("5");
+  delay(1000);
+  Serial.println("4");
+  delay(1000);
+  Serial.println("3");
+  delay(1000);
+  Serial.println("2");
+  delay(1000);
+  Serial.println("1");
+  delay(1000);
+  Serial.println("Setup complete!");
 }
 
 bool joystickButtonIsPressed() {
@@ -231,7 +259,9 @@ void controlGantry(int targetX, int targetY) {
 
   int mmToMoveY = abs(currLocY - targetY);
 
-  //moves one motor at a time due to battery limitations
+  //moves one motor at a time due to battery 
+  
+  int i = 0;
 
   for (int mmX = 1; (mmX <= (mmToMoveX) && hasBeenPrinted == false); mmX++) { //move one mm per loop until all mm movement is complete 
     setPowerForGantry(xMovementDirection, STOPPED);
@@ -241,13 +271,34 @@ void controlGantry(int targetX, int targetY) {
 
     if (joystickButtonIsPressed() == true) { // abort print if joystick button is pressed
       Serial.println("Print job aborted!");
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print("Job Aborted!");
+      // lcd.clear();
+      // lcd.setCursor(0, 0);
+      // lcd.print("Job Aborted!");
       hasBeenPrinted = true;
       return; //exit function
     }
+
+    i++;
+
+    if (i > 5) {
+      i = 0;
+    }
+
+    //each loop, if it is extruding, turn the plunger down
+    if (isExtruding == true && i == 5) {
+      if (servoPos + unitsPerLoopForExtrusionServoMovement >= extrusionServoUpperLimit && servoPos + unitsPerLoopForExtrusionServoMovement <= extrusionServoBottomLimit) {
+        extrusionServo.write(servoPos + unitsPerLoopForExtrusionServoMovement);
+        servoPos = (servoPos + unitsPerLoopForExtrusionServoMovement);
+        Serial.print("Moved extrusion servo to ");
+        Serial.print(servoPos);
+        Serial.print("\n");
+      } else {
+        Serial.println("Servo position out of bounds!");
+      }
+    }
   }
+
+  i = 0;
 
   for (int mmY = 1; (mmY <= (mmToMoveY) && hasBeenPrinted == false); mmY++) { // move one mm per loop until all mm movement is complete
     setPowerForGantry(STOPPED, yMovementDirection);
@@ -257,11 +308,32 @@ void controlGantry(int targetX, int targetY) {
 
     if (joystickButtonIsPressed() == true) { // abort print if joystick button is pressed
       Serial.println("Print job aborted!");
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print("Job Aborted!");
+      // lcd.clear();
+      // lcd.setCursor(0, 0);
+      // lcd.print("Job Aborted!");
       hasBeenPrinted = true;
       return; //exit function
+    }
+
+    i++;
+
+    if (i>5) {
+      i=1;
+    }
+
+    //each loop, if it is extruding, turn the plunger down
+    if (isExtruding == true && i == 5) {
+      if (servoPos + unitsPerLoopForExtrusionServoMovement >= extrusionServoUpperLimit && servoPos + unitsPerLoopForExtrusionServoMovement <= extrusionServoBottomLimit) {
+        extrusionServo.write(servoPos + unitsPerLoopForExtrusionServoMovement);
+        servoPos = (servoPos + unitsPerLoopForExtrusionServoMovement);
+        Serial.print("Moved extrusion servo to ");
+        Serial.print(servoPos);
+        Serial.print("\n");
+      } else {
+        Serial.println("Servo position out of bounds!");
+      }
+    } else {
+      Serial.print("Skipped extrusion");
     }
   }
 
@@ -269,15 +341,19 @@ void controlGantry(int targetX, int targetY) {
   currLocY = targetY;
 }
 
+void turnFanOn() {
+  digitalWrite(fan5vPin, HIGH); // Set Power pin to HIGH/5V
+}
+
+void turnFanOff() {
+  digitalWrite(fan5vPin, LOW); // Set Power pin to HIGH/5V
+}
+
+int j = 0;
+
 void loop() {
   if (hasBeenPrinted == false) { // if it hasn't been printed, print it
-    for (int lineNum = 0; lineNum < (sizeof(gcode) / sizeof(gcode[0])); lineNum++) {
-      //each loop, if it is extruding, turn the plunger down one unit (TODO: add min, max limits to this)
-
-      if (isExtruding == true) {
-        extrusionServo.write(servoPos - 1);
-      }
-
+    for (size_t lineNum = 0; lineNum < (sizeof(gcode) / sizeof(gcode[0])); lineNum++) {
       String lineContent = gcode[lineNum];
       if (lineContent.startsWith("G0")) {
         int xIndex = lineContent.indexOf('X');
@@ -298,11 +374,11 @@ void loop() {
 
         controlGantry(xVal, yVal);
 
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("X: " + String(currLocX));
-        lcd.setCursor(0, 1);
-        lcd.print("Y: " + String(currLocY));
+        // lcd.clear();
+        // lcd.setCursor(0, 0);
+        // lcd.print("X: " + String(currLocX));
+        // lcd.setCursor(0, 1);
+        // lcd.print("Y: " + String(currLocY));
       } else if (lineContent.startsWith("G1") && hasBeenPrinted == false) {
         int eIndex = lineContent.indexOf('E');
 
@@ -316,16 +392,16 @@ void loop() {
         // Handle extrusion logic here based on eVal
         if (eVal > 0) {
           Serial.println("Extruding...");
-          lcd.clear();
-          lcd.setCursor(0, 0);
-          lcd.print("Extruding...");
+          // lcd.clear();
+          // lcd.setCursor(0, 0);
+          // lcd.print("Extruding...");
 
           isExtruding = true;
         } else {
           Serial.println("Stopping extrusion...");
-          lcd.clear();
-          lcd.setCursor(0, 0);
-          lcd.print("Stopping...");
+          // lcd.clear();
+          // lcd.setCursor(0, 0);
+          // lcd.print("Stopping...");
 
           isExtruding = false;
         }
@@ -333,7 +409,14 @@ void loop() {
       delay(500); //prevent overload
     }
     hasBeenPrinted = true;
-  } else { // if it has been printed, switch to joystick control
+  } else { // if it has been printed, switch to joystick 
+    j++;
+
+    if (joystickButtonIsPressed() && (j > 1000)) { //on joystick button press once in manual mode, reset servo. makes sure that it has been at least two sec after switching to prevent accidents
+      extrusionServo.write(extrusionServoInitPos);
+    }
+
+
     int xValue = analogRead(joystickXPin);
     int yValue = analogRead(joystickYPin);
 
@@ -370,5 +453,7 @@ void loop() {
       setPowerForGantry(STOPPED, STOPPED);
       Serial.println("Stopped");
     }
+
+    delay(20);
   }
 }
