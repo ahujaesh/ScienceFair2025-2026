@@ -1,12 +1,19 @@
 {
 	"folders": [
 		{
-			"path": "bioprinting/v1-2dPlotter/arduinoENV"
+			"path": "."
 		},
 		{
 			"name": "v1",
 			"path": "bioprinting/v1-2dPlotter/arduinoENV/v1"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"cSpell.words": [
+			"bioink",
+			"bioprinter",
+			"Bioprinter",
+			"gcode"
+		]
+	}
 }
