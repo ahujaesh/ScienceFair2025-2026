@@ -1,0 +1,6 @@
+Title: A novel aproach to the revitlizing of the biomedical industry by lowering the cost boundries currently present in the field, allowing for greater innovation in bioprinting and the creation of new methods and technologies, increasing the quality of healthcare and saving lives
+
+Eng. goal: Build a fully custom bioprinter and bioprinting software, with dimensional accuracy under 1mm, demonstated through a suscessfull print of a living tissue, that allows easier acsees for smaller labratories and research teams into the field of bioprinting, increasing the rate of innovation and advancing the field of medicine to new levels.
+
+Procedure:
+
