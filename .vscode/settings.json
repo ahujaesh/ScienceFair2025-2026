@@ -7,14 +7,21 @@
         "Bioprinting",
         "bloprinting",
         "Convolutional",
+        "EEPROM",
         "EHDJ",
         "Electrohydrodynamic",
+        "gcode",
         "Inkjet",
         "ISEF",
+        "janky",
+        "jellyfin",
+        "Klipper",
+        "microcenter",
         "microscale",
         "PETG",
         "Quing",
         "substyles",
+        "vikunja",
         "Yifei"
     ]
 }

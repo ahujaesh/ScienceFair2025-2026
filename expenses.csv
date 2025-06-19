@@ -1,26 +1,18 @@
 ﻿Product,Purpose - Short,Approx cost,Purpose - Long,Possible Buying locations
-Trypan Blue,Check whether cells are alive or dead,$30/100ml,"Mixed into bioink, turns dead cells blue - can be replaced with ml?",Thermo fitcher? https://www.thermofisher.com/order/catalog/product/15250061 $26/100mL isnt bad
-Raspberry Pi Camera high-res,"Alt to Trypan Blue, checks if cells are alive",,"Train a ml model on cells on laptop, compress, run on pi live as the print runs",Amazon?
 Sodium Alginate,bioink base,$10/4oz,"Suspend cellsin this material to print in jelly, converts to solid after reaction with calium chloride","Food grade sodium alginate on amazon, mixed with water & cells to create a bioink that is sterile enough for my purposes (not lab grade but good enough) https://www.amazon.com/Ingredient-Thickening-Molecular-Gastronomy-Component/dp/B09MWQ45Z9/ref=sr_1_1_sspa?adgrpid=1331509142862881&dib=eyJ2IjoiMSJ9.eixhudLw9EOJLJuiynYwMUL_VflhpxAm1MvTgbPWjZ-xgq7ZMa-OLgainOdgFiNY5Fei4QNKB8lkuribA5MDe9R-ptm7ia43N8bXIk7SS0lY-pKv0TwhY9yLrYcHKU-FAXo1MMq7B2KFzLUVJJX3nQt3WIIXSBLQhzLX-cSoq7eJNQiGIhXVrA0gfa86FTa8qliy2Bw1qBvJWTzzoT94qMDVbn7H6jllwMOn9QA3AlKph0CcLGFR4CbY2SPF0NOdkuq9Dcs7cmAbGxlR20SN3pYrds7W396TQJjbvSdz8lk.ER8-QdxyguMprLNRg74sSBrwbt46LgmTkBZg7Y8vOrw&dib_tag=se&hvadid=83219644886461&hvbmt=be&hvdev=c&hvlocphy=135204&hvnetw=o&hvqmt=e&hvtargid=kwd-83219658235366%3Aloc-190&hydadcr=4600_13230458&keywords=alginate+sodium&mcid=8f3ef1ab4e8835168c18609cdc0b0e4d&msclkid=f4ec1e63352515387738766e30d7d3a9&qid=1745683978&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1"
 Calcium Chloride (CaCl₂),Solidifies bioink base,$8/2oz," once the first layer is printed, this is sprayed on to allow the next layer to be printed on top","Food grade CaCl₂ on amazon, sterile enough for my purposes (not lab grade but good enough) https://www.amazon.com/Calcium-Chloride-Molecular-Gastronomy-Certified/dp/B00BLPNJLK/ref=sr_1_6?crid=M31OORWVTSOS&dib=eyJ2IjoiMSJ9.pf8Rm5iLkZe2bLOXe9gVj0wPHKjP-kroXil3M_dDWtYciXtF7D21Wvajmhe-2xUJwuaTMQqKV6nRbp0UFB3CmuOKFKtWrj-X3CBkeLH0duAP-qXXOP2mviiC5s7NdV1m04OrqWrgRElEHtgMms9OXd9z8UZiPaNDer6BQaRDSFnSTKEI0TA_RUnaoH1PrbAV_KSBk3E03WZBf2FXyrPNrnt9GyqY7VLPXjeLwu-CvZkbmmr2TKEFWzj6GYwFXckFKYyLjglYHSc9MoJcN25vHi5B8lVfJKxFZSgL5bRMvKY.ut0PUIr-6B5vUU09ehBgTaIu3nNH5nbpbg9aCPG0ufw&dib_tag=se&keywords=calcium+chloride&qid=1745684127&sprefix=calcium+chloride%2Caps%2C156&sr=8-6"
-glass print bed,hold printed component,,,
+used ender 3 pro,base structure for modding,$80,,
+glass print bed,hold printed component - bought with the used ender 3 pro for $0,$0,,
+"filament (PLA, PETG, ABS, PC)",custom designed parts,$40,"printed on a bambu lab p1sc - some (PLA, PETG) bought with the used ender 3 pro - others (PC, ABS) from microcenter", 
+Gelatin,low cost testing material for use before lab grade material to confirm printer function,$2.99,,bought from target
 Cells,living part,$15 ,,carolina biological supply https://www.carolina.com/algae/auxenochlorella-chlorella-pyrenoidosa-living/152067.pr?question=algae
-Pi,control system,$80 ,,
-pi fan,,,,
-pi case,,,,
-5 steppers,"x, y, 2 for z, one for seringe",,,
-5 stepper drivers,drive steppers,,,
-all printed parts for a snappy,,,,
-printed parts for the mod kit,this kit allows for a seringe instead of a extruder,,,
-klipper with pi as mcu,software,,,
-pi microhdmi to hdmi adapter,,,,
-limit switches,these buttons are placed on the edges to tell the printer where the edges are by moving the toolhead until the button is pressed,,,
-m3 screws,,,,
-m3 bolt,,,,
-stepper wires,the steppers from microcenter didn’t come with wires,,,
-~3.5 kg fillament,"snappy is 3.1, mod kit is ~0.3, ~0.1 for failed prints etc",,,
-seringe with needle,,,,
-hdmi cable,,,,
-monitor,,,,
-keyboard,,,,
-mouse,,,,
+Pi,control system,$80 ,,bought from microcenter
+pi fan,used to cool the pi,$0,,scrapped from an old toshiba
+pi case,"3d printed in pla with open source design, used to protect the pi from damage",$0,,bambu p1sc
+stepper,"for syringe, replaces the extruder stepper as it isn't being moved just unplugged",,,bought from microcenter
+printed parts for the mod kit,this kit allows for a syringe instead of a extruder,,,bambu p1sc
+klipper with pi as mcu,software,,,internet/Klipper3D
+screws and bolt m3-m8,misc - bought one big kit fromm amazon,$20,,bought from amazon
+stepper wires,the steppers from microcenter didn’t come with wires,,,bought from microcenter
+syringe with needle,,,,bought from amazon
+laptop, used for headless pi,$0,exempt from cost,N/A
