@@ -13,6 +13,7 @@
         "Electrohydrodynamic",
         "endstop",
         "gcode",
+        "hotend",
         "Inkjet",
         "ISEF",
         "janky",
@@ -25,6 +26,7 @@
         "selfhosting",
         "substyles",
         "vikunja",
+        "Vulgaris",
         "Yifei"
     ]
 }
