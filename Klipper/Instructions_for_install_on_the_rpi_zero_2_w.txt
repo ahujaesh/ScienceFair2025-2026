@@ -1,0 +1,3 @@
+Just use the standard install provided my mainsailOS, since there is no OS to preserve, unlike the rpi5, which is currently in use and cannot have its os changed due to a loss of data. Link: https://docs-os.mainsail.xyz/getting-started/raspberry-pi-os-based
+
+Once everything is installed, continue with the plan.

@@ -1,0 +1,7 @@
+Since the OS is to be preserved on this rpi, the plan is to install klipper without installing a new OS, unlike the rpi zero 2 w, upon which i can install a new os, since there is no data to be preserved.
+
+Instructions:
+
+Use KIaUH to install everything instead of having it preinstalled on an OS (git clone https://github.com/th33xitus/kiauh.git ~/kiauh && ~/kiauh/kiauh.sh)
+
+Once everything is installed, continue with the plan.
