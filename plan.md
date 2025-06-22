@@ -6,11 +6,13 @@ PLAN A: (If the second Raspberry Pi doesn't come in from Hack Club)
 
 {
 
-Firstly, it would be smart to remove whatever OS is currently loaded on the board's internal EEPROM and Memory (Which seems to be a version of Marlin, but which version I cannot be entirely sure of) and replace it with a custom Klipper version, complete with proper cold extrusion support and allowing for the correct way to reverse the extruder motor, instead of the janky way that I tried to do it earlier, which resulted in the aforementioned fire. I still don't know if I would like to use my Raspberry Pi 5 for this, as it is currently functioning as a server for a Jellyfin and Vikunja instance alongside a Cloudflare tunnel. Still, I am looking to move my Vikunja instance into an AWS container and migrate my Jellyfin instance to my Synology NAS using Docker, which would free up the Raspberry Pi 5 for use as a Klipper host.
+Firstly, it would be smart to remove whatever OS is currently loaded on the board's internal EEPROM and Memory (Which seems to be a version of Marlin, but which version I cannot be entirely sure of) and replace it with a custom Klipper version, complete with proper cold extrusion support and allowing for the correct way to reverse the extruder motor, instead of the janky way that I tried to do it earlier, which resulted in the aforementioned fire. I still don't know if I would like to use my Raspberry Pi 5 for this, as it is currently functioning as a server for a Jellyfin and Vikunja instance alongside a Cloudflare tunnel. Still, I am looking to move my Vikunja instance into an Microsoft Azure container and migrate my Jellyfin instance to my Synology NAS using Docker, which would free up the Raspberry Pi 5 for use as a Klipper host.
 
 Todo list summary from the previous paragraph: (note: fill the md brackets with an x when the step is complete to check it off)
 
-- [ ] Move the Vikunja instance to AWS and reconnect it to the Cloudflare instance
+- [x] Activate Github's Microsoft Azure free credit through the Student Developer pack for students 13-17
+- [ ] Learn how to use Microsoft Azure
+- [ ] Move the Vikunja instance to Microsoft Azure and reconnect it to the Cloudflare instance
 - [ ] Move the Jellyfin instance into a docker container on the Synology DS212 2TB
 - [ ] Install Klipper on the Ender 3 Pro / bioprinter and the rpi5
 
@@ -21,7 +23,20 @@ PLAN B: (Presuming that the Raspberry Pi Zero 2 W from Hack Club does come in on
 
 {
 
-Firstly, I still want to perform the first two tasks above (Move the Vikunja instance to AWS, reconnect it to the Cloudflare instance, and move the Jellyfin instance into a Docker container on the Synology DS212 2TB). Still, these improvements are, due to the qualities inherent in their nature, lower priority than the other, more pressing tasks outlined in the rest of this document. I will complete the tasks after I have finished all ECs, any possible internships, and any other pending work. The services are currently functioning fine, though insecurely, with no urgent need to change that. I would then install a build of Mainsail OS on the Raspberry Pi Zero 2 W acquired from Hack Club due to hours from this project, flash the Klipper file from that OS onto the modded Ender 3 Pro turned bioprinter, and use the Raspberry Pi Zero 2 W as the permanent host for the Ender so that the Raspberry Pi 5 8GB can remain as my experiment board for selfhosting. As the experiment progresses, there is a high chance of another accident occurring that would lead to damage to the printer's main board (as seen in the earlier fire). Since I chose the cheaper board, the more expensive Raspberry Pi 5 will not be damaged, and I could insert it later if needed.
+Firstly, I still want to perform the first two tasks above (Move the Vikunja instance to Microsoft Azure, reconnect it to the Cloudflare instance, and move the Jellyfin instance into a Docker container on the Synology DS212 2TB). Still, these improvements are, due to the qualities inherent in their nature, lower priority than the other, more pressing tasks outlined in the rest of this document. I will complete the tasks after I have finished all ECs, any possible internships, and any other pending work. The services are currently functioning fine, though insecurely, with no urgent need to change that. I would then install a build of Mainsail OS on the Raspberry Pi Zero 2 W acquired from Hack Club due to hours from this project, flash the Klipper file from that OS onto the modded Ender 3 Pro turned bioprinter, and use the Raspberry Pi Zero 2 W as the permanent host for the Ender so that the Raspberry Pi 5 8GB can remain as my experiment board for selfhosting. As the experiment progresses, there is a high chance of another accident occurring that would lead to damage to the printer's main board (as seen in the earlier fire). Since I chose the cheaper board, the more expensive Raspberry Pi 5 will not be damaged, and I could insert it later if needed.
+
+Todo list summary from the previous paragraph:
+
+- [ ] Install a build of Mainsail OS on the Raspberry Pi Zero 2 W acquired from Hack Club due to hours from this project
+- [ ] Add the printer .cfg file from below
+- [ ] Flash the Klipper .bin file from Mainsail OS onto the modded Ender 3 Pro turned bioprinter
+- [ ] Start printing bioink!
+- [ ] Finish all ECs, internships, etc.
+- [x] Activate Github's Microsoft Azure free credit through the Student Developer pack for students 13-17
+- [ ] Learn how to use Microsoft Azure
+- [ ] Move the Vikunja instance to Microsoft Azure and reconnect it to the Cloudflare instance
+- [ ] Move the Jellyfin instance into a docker container on the Synology DS212 2TB
+
 
 }
 
