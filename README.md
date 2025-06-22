@@ -19,7 +19,7 @@ What's to come?:
 
 - Complete modding the bioprinter
 - Test the paste extruder with a gelatin and water mix; start tuning the print variables on this to not waste the more expensive final bioink
-- Print with a bioink comprised of Chlorella Vulgaris (type of algae), Sodium Alginate (thickener, gives the consistency required to print the bioink), and Calcium Chloride (spray onto printed layers to make them stiff enough for the next layer to be printed on top)  
+- Print with a bioink comprised of Chlorella Vulgaris (type of algae), Sodium Alginate (thickener, gives the consistency required to print the bioink), and Calcium Chloride (spray onto printed layers to make them stiff enough for the next layer to be printed on top). [Detailed Explanation for why this works](bioprinting/research/bioink.md)
 <img src="media/Chlorella_vulgaris_stock_photo_for_readme.png" alt="chlorella vulgaris stock photo" style="max-width:15%;">
 - Perhaps (not decided yet), print tissues with 3T3 cells (mouse) or HeLa cells (Human), if all previous steps are completed with enough time to allow for experimentation with more advanced cells.  
 <img src="media/HeLa_Cells_generic_internet_image_for_readme.png" alt="HeLa generic internet image" style="max-width:25%;">
